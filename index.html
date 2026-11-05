@@ -1,0 +1,487 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For My Love 🤎</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 30px 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #f8f0e7, #e8d5c2);
+      font-family: 'DM Sans', sans-serif;
+      color: #654832;
+      overflow-x: hidden;
+    }
+
+    .floating-heart {
+      position: fixed;
+      color: #b58a6b;
+      opacity: 0.25;
+      font-size: 25px;
+      pointer-events: none;
+      animation: float 5s ease-in-out infinite;
+    }
+
+    .heart1 { top: 12%; left: 10%; }
+    .heart2 { top: 20%; right: 12%; animation-delay: 1s; }
+    .heart3 { bottom: 15%; left: 15%; animation-delay: 2s; }
+    .heart4 { bottom: 18%; right: 10%; animation-delay: 1.5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0); }
+      50% { transform: translateY(-15px) rotate(10deg); }
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #a17c61;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 6vw, 43px);
+      color: #704b32;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #987963;
+      margin-bottom: 35px;
+    }
+
+    /* Amplop */
+    .envelope-wrapper {
+      position: relative;
+      width: min(100%, 420px);
+      height: 270px;
+      margin: 0 auto 25px;
+      cursor: pointer;
+      perspective: 1000px;
+    }
+
+    .envelope {
+      position: absolute;
+      inset: 0;
+      background: #c7a58a;
+      border-radius: 8px;
+      box-shadow: 0 18px 35px rgba(92, 61, 42, 0.18);
+    }
+
+    .envelope::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      border-left: 210px solid transparent;
+      border-right: 210px solid transparent;
+      border-bottom: 160px solid #b58c6e;
+      z-index: 3;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .envelope::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-left: 210px solid #d8b99d;
+      border-right: 210px solid #d8b99d;
+      border-bottom: 135px solid transparent;
+      z-index: 4;
+      border-radius: 8px 8px 0 0;
+      transform-origin: top;
+      transition: transform 0.8s ease;
+    }
+
+    .letter {
+      position: absolute;
+      left: 5%;
+      top: 8%;
+      width: 90%;
+      height: 84%;
+      background: #fffaf2;
+      border-radius: 6px;
+      padding: 25px 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.9s ease;
+      z-index: 2;
+      box-shadow: 0 3px 12px rgba(80, 50, 30, 0.1);
+    }
+
+    .letter-icon {
+      font-size: 35px;
+      margin-bottom: 12px;
+    }
+
+    .letter h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: #7b543d;
+      margin-bottom: 8px;
+    }
+
+    .letter p {
+      font-size: 12px;
+      color: #a1846e;
+    }
+
+    .seal {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 55px;
+      height: 55px;
+      background: #8a5d42;
+      color: #fff1df;
+      border-radius: 50%;
+      z-index: 5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 23px;
+      transition: opacity 0.4s ease;
+    }
+
+    .envelope-wrapper.open .envelope::after {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .envelope-wrapper.open .letter {
+      transform: translateY(-155px);
+      z-index: 6;
+      height: 100%;
+    }
+
+    .envelope-wrapper.open .seal {
+      opacity: 0;
+    }
+
+    .click-hint {
+      font-size: 13px;
+      color: #967660;
+      margin-bottom: 30px;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Surat */
+    .message {
+      display: none;
+      background: rgba(255, 250, 242, 0.94);
+      border: 1px solid #e1cbb7;
+      border-radius: 18px;
+      padding: 30px;
+      text-align: left;
+      box-shadow: 0 15px 35px rgba(92, 61, 42, 0.1);
+      animation: appear 0.8s ease;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message h2 {
+      font-family: 'Playfair Display', serif;
+      text-align: center;
+      font-size: 28px;
+      color: #714b35;
+      margin-bottom: 8px;
+    }
+
+    .intro {
+      text-align: center;
+      font-size: 13px;
+      color: #a1846e;
+      margin-bottom: 25px;
+    }
+
+    .lesson {
+      margin: 18px 0;
+      padding: 17px;
+      background: #f6ebdf;
+      border-radius: 12px;
+      border-left: 3px solid #b88d6d;
+    }
+
+    .lesson h3 {
+      font-size: 15px;
+      color: #80583e;
+      margin-bottom: 8px;
+    }
+
+    .lesson p {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #705645;
+    }
+
+    .closing {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 17px;
+      line-height: 1.8;
+      color: #80583e;
+      margin-top: 25px;
+    }
+
+    .signature {
+      text-align: right;
+      margin-top: 25px;
+      color: #a1846e;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    button {
+      border: none;
+      background: #80583e;
+      color: #fff7ed;
+      padding: 13px 25px;
+      border-radius: 30px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 25px;
+    }
+
+    button:hover {
+      background: #684632;
+      transform: translateY(-3px);
+      box-shadow: 0 7px 15px rgba(92, 61, 42, 0.2);
+    }
+
+    .footer {
+      margin-top: 35px;
+      font-size: 11px;
+      color: #a1846e;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 480px) {
+      .envelope-wrapper {
+        height: 230px;
+      }
+
+      .envelope-wrapper.open .letter {
+        transform: translateY(-125px);
+      }
+
+      .message {
+        padding: 22px 17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="floating-heart heart1">♡</div>
+  <div class="floating-heart heart2">♡</div>
+  <div class="floating-heart heart3">♡</div>
+  <div class="floating-heart heart4">♡</div>
+
+  <div class="container">
+    <p class="eyebrow">A little love lesson</p>
+
+    <h1>For My Love 🤎</h1>
+
+    <p class="subtitle">
+      Ada sedikit hal yang ingin aku ajarkan ke kamu...
+    </p>
+
+    <div class="envelope-wrapper" id="envelope" onclick="openLetter()">
+      <div class="envelope"></div>
+
+      <div class="letter">
+        <div class="letter-icon">💌</div>
+        <h2>For My Favorite Person</h2>
+        <p>A little guide to understanding me</p>
+      </div>
+
+      <div class="seal">♡</div>
+    </div>
+
+    <p class="click-hint" id="hint">
+      Klik amplopnya untuk membuka surat 🤎
+    </p>
+
+    <div class="message" id="message">
+      <h2>Dear Sayangku,</h2>
+
+      <p class="intro">
+        Selamat datang di kelas kecil tentang cara menghadapi aku hehe 🤭
+      </p>
+
+      <div class="lesson">
+        <h3>01. Kalau aku tiba-tiba ngambek...</h3>
+        <p>
+          Jangan langsung panik, yaa. Kadang aku bukan marah beneran,
+          mungkin cuma lagi pengen diperhatiin, lagi sensitif, atau
+          sesekali iseng nguji kamu sedikit.
+          Tapi kalau aku benar-benar marah, aku juga akan belajar
+          menyampaikan alasannya dengan jujur, bukan cuma berharap
+          kamu bisa menebak isi pikiranku.
+        </p>
+      </div>
+
+      <div class="lesson">
+        <h3>02. Kamu harus siap dengan mood-ku</h3>
+        <p>
+          Punya pasangan itu berarti siap mengenal berbagai sisi dirinya.
+          Ada saat aku ceria, manja, banyak cerita, tapi ada juga saat
+          aku tiba-tiba mellow atau butuh waktu buat menenangkan diri.
+          Aku nggak minta kamu selalu tahu harus berbuat apa,
+          aku cuma berharap kamu mau belajar memahami aku.
+        </p>
+      </div>
+
+      <div class="lesson">
+        <h3>03. Kalau aku lagi ngambek, jangan bikin makin ngambek 😭</h3>
+        <p>
+          Coba tanya dengan lembut, “Kenapa, sayang? Mau cerita atau
+          mau ditenangin dulu?” Jangan langsung membalas dengan nada
+          tinggi atau menganggap perasaanku sepele.
+          Kadang aku cuma butuh jeda, perhatian, atau diyakinkan
+          kalau kita baik-baik saja.
+        </p>
+      </div>
+
+      <div class="lesson">
+        <h3>04. Kalau aku ngambek, bukan berarti aku nggak sayang</h3>
+        <p>
+          Kadang aku ngambek justru karena aku merasa dekat dan nyaman
+          sama kamu. Aku ingin kamu tahu kalau ada sesuatu yang
+          menggangguku. Tapi ingat, ngambek bukan satu-satunya cara
+          menunjukkan cinta—aku juga harus belajar bicara baik-baik.
+        </p>
+      </div>
+
+      <div class="lesson">
+        <h3>05. Kalau aku diam, coba tanyakan kabarku</h3>
+        <p>
+          Diam bisa berarti banyak hal: sedang lelah, butuh ruang,
+          belum siap cerita, atau memang ada yang mengganjal.
+          Jadi jangan cuma menunggu sampai aku baik sendiri.
+          Coba tanyakan dengan tulus dan beri aku ruang untuk menjawab.
+          Komunikasi tetap jadi kunci kita, yaa.
+        </p>
+      </div>
+
+      <div class="lesson">
+        <h3>06. Kamu hampir lulus, tapi masih perlu latihan! 🏆</h3>
+        <p>
+          Kamu sudah hebat karena mau mengusahakan aku, mau meminta maaf,
+          dan mau belajar memahami perasaanku.
+          Tapi masih perlu latihan di bagian sabar, peka, dan menghadapi
+          mood-ku yang kadang suka berubah-ubah.
+          Jangan khawatir, aku juga akan belajar memahami kamu.
+          Kita sama-sama belajar, ya?
+        </p>
+      </div>
+
+      <p class="closing">
+        “Aku nggak butuh kamu selalu sempurna dalam memahami aku.
+        Aku cuma ingin kamu tetap mau belajar, sebagaimana aku juga
+        ingin belajar mencintai kamu dengan lebih baik.”
+      </p>
+
+      <p class="signature">
+        With all my love,<br>
+        Your favorite person 🤎
+      </p>
+
+      <div style="text-align: center;">
+        <button onclick="showLove()">
+          Klik kalau kamu siap lanjut belajar 💌
+        </button>
+      </div>
+    </div>
+
+    <p class="footer">MADE WITH LOVE, JUST FOR YOU ♡</p>
+  </div>
+
+  <script>
+    function openLetter() {
+      const envelope = document.getElementById("envelope");
+      const message = document.getElementById("message");
+      const hint = document.getElementById("hint");
+
+      envelope.classList.toggle("open");
+
+      if (envelope.classList.contains("open")) {
+        hint.textContent = "Suratnya terbuka... baca pelan-pelan yaa 🤎";
+
+        setTimeout(() => {
+          message.classList.add("show");
+
+          message.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+        }, 500);
+      } else {
+        message.classList.remove("show");
+        hint.textContent = "Klik amplopnya untuk membuka surat 🤎";
+      }
+    }
+
+    function showLove() {
+      alert(
+        "SELAMAT, SAYANGKU! 🤎\n\n" +
+        "Kamu hampir lulus kelas memahami aku!\n" +
+        "Terima kasih sudah mau belajar dan mengusahakan aku.\n\n" +
+        "Aku sayang kamu. Jangan berhenti belajar, yaa 🤭💌"
+      );
+    }
+  </script>
+
+</body>
+</html>
